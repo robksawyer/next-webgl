@@ -19,6 +19,7 @@ class MyDocument extends Document {
             content='width=device-width, initial-scale=1.0, shrink-to-fit=no'/>
 
           <link rel="stylesheet" href='/_next/static/style.css'/>
+          <link rel="stylesheet" href='https://cdnjs.cloudflare.com/ajax/libs/tachyons/4.11.1/tachyons.min.css'/>
         </Head>
 
         <body>

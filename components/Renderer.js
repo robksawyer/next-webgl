@@ -79,8 +79,6 @@ class Renderer extends React.Component {
     this.frameId = window.requestAnimationFrame(this.handleAnimationFrame)
   }
 
-
-
   render = () => {
     return (
       <>

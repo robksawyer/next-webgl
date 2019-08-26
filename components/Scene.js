@@ -1,14 +1,23 @@
 import React from 'react'
 
 import * as THREE from 'three'
+
+// import { Button, Form, InputGroup, Label } from 'reactstrap'
+
+// A THREE.js React renderer, see: https://github.com/drcmda/react-three-fiber
+import { apply as applyThree, Canvas, useRender, useThree } from 'react-three-fiber'
+// A React animation lib, see: https://github.com/react-spring/react-spring
+import { apply as applySpring, useSpring, a, interpolate } from 'react-spring'
+
 import Renderer from './Renderer'
 
-import { Button, Form, InputGroup, Label } from 'reactstrap'
-
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import faForward from '@fortawesome/fontawesome-free-solid/faForward'
-import faBackward from '@fortawesome/fontawesome-free-solid/faBackward'
-
+// Import and register postprocessing classes as three-native-elements for both react-three-fiber & react-spring
+// They'll be available as native elements <effectComposer /> from then on ...
+import { EffectComposer } from '../postprocessing/EffectComposer'
+import { RenderPass } from '../postprocessing/RenderPass'
+import { GlitchPass } from '../postprocessing/GlitchPass'
+applySpring({ EffectComposer, RenderPass, GlitchPass })
+applyThree({ EffectComposer, RenderPass, GlitchPass })
 
 /**
  * Implements a 3D scene
@@ -45,8 +54,8 @@ class Scene extends React.Component {
     // And WebGLRenderer and WebGLRenderingContext have been created.
 
     this.material = new THREE.MeshPhongMaterial({
-      color: '#d8d9fd',
-      specular: '#ffffff',
+      color: '#ffd9fd',
+      specular: '#ff44ff',
     })
 
     this.scene = new THREE.Scene()
@@ -57,7 +66,7 @@ class Scene extends React.Component {
     this.cube.position.z = 0
     this.scene.add(this.cube)
 
-    const ambientLight = new THREE.AmbientLight('#ffffff', 0.5)
+    const ambientLight = new THREE.AmbientLight('#ff44ff', 1.5)
     this.scene.add(ambientLight)
 
     const pointLight = new THREE.PointLight('#ffffff', 1.0)
@@ -67,14 +76,15 @@ class Scene extends React.Component {
     this.camera = new THREE.PerspectiveCamera(75, 16 / 9, 0.1, 1000)
     this.camera.position.z = 4
 
-    renderer.setClearColor('#0d0d1e')
+    renderer.setClearColor('#ccd9fd')
   }
 
   renderScene = (renderer, gl) => {
     // This function is called when browser is ready to repaint the canvas.
     // Draw your single frame here.
 
-    this.cube.rotation.y += 0.01 * this.state.rotationDirection
+    this.cube.rotation.y += Math.random()/6 * this.state.rotationDirection
+    this.cube.rotation.x += Math.random()/6 * this.state.rotationDirection
 
     renderer.render(this.scene, this.camera)
   }
@@ -89,32 +99,15 @@ class Scene extends React.Component {
   render = () => {
     return (
       <div className='container-fluid'>
-        <div className='row'>
 
-          {/* Column with Sidebar */}
-          <div className='col-3'>
-            <Form>
-              <Button id='btn-dir' onClick={this.handleDirectionButtonClick}>
-                {/* Toggle icon depending on current direction */}
-                <FontAwesomeIcon icon={
-                  this.state.rotationDirection > 0
-                    ? faForward
-                    : faBackward
-                }/>
-              </Button>
-            </Form>
-          </div>
 
-          {/* Column with Renderer */}
-          <div className='col-9'>
-            <div className="row">
-              <Renderer
-                onResize={this.onResize}
-                initScene={this.initScene}
-                renderScene={this.renderScene}
-              />
-            </div>
-          </div>
+        {/* Column with Renderer */}
+        <div className='w-100'>
+          <Renderer
+            onResize={this.onResize}
+            initScene={this.initScene}
+            renderScene={this.renderScene}
+          />
         </div>
 
         {/*language=CSS*/}
