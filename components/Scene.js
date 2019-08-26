@@ -1,23 +1,15 @@
-import React from 'react'
-
+/**
+ * components/Scene.js
+ */
+import React, { useCallback } from 'react'
+import PropTypes from 'prop-types'
 import * as THREE from 'three'
 
+import { Canvas } from 'react-three-fiber'
+
 // import { Button, Form, InputGroup, Label } from 'reactstrap'
-
-// A THREE.js React renderer, see: https://github.com/drcmda/react-three-fiber
-import { apply as applyThree, Canvas, useRender, useThree } from 'react-three-fiber'
-// A React animation lib, see: https://github.com/react-spring/react-spring
-import { apply as applySpring, useSpring, a, interpolate } from 'react-spring'
-
+//
 import Renderer from './Renderer'
-
-// Import and register postprocessing classes as three-native-elements for both react-three-fiber & react-spring
-// They'll be available as native elements <effectComposer /> from then on ...
-import { EffectComposer } from '../postprocessing/EffectComposer'
-import { RenderPass } from '../postprocessing/RenderPass'
-import { GlitchPass } from '../postprocessing/GlitchPass'
-applySpring({ EffectComposer, RenderPass, GlitchPass })
-applyThree({ EffectComposer, RenderPass, GlitchPass })
 
 /**
  * Implements a 3D scene
@@ -96,19 +88,16 @@ class Scene extends React.Component {
     })
   }
 
+
   render = () => {
     return (
       <div className='container-fluid'>
-
-
         {/* Column with Renderer */}
-        <div className='w-100'>
-          <Renderer
-            onResize={this.onResize}
-            initScene={this.initScene}
-            renderScene={this.renderScene}
-          />
-        </div>
+        <Renderer
+          onResize={this.onResize}
+          initScene={this.initScene}
+          renderScene={this.renderScene}
+        />
 
         {/*language=CSS*/}
         <style jsx>{`
@@ -120,7 +109,6 @@ class Scene extends React.Component {
           .row {
             height: 100vh;
           }
-
         `}</style>
       </div>
     )
